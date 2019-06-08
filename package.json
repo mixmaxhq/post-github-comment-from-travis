@@ -1,0 +1,55 @@
+{
+  "name": "@mixmaxhq/post-github-comment-from-travis",
+  "version": "0.1.0",
+  "description": "Post an automated message to the relevant GitHub pull request.",
+  "bin": "./bin/post-github-comment-from-travis.js",
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "babel src -d dist && babel bin/src -d bin",
+    "ci": "npm run lint",
+    "lint": "eslint .",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepublishOnly": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/mixmaxhq/post-github-comment-from-travis.git"
+  },
+  "keywords": [
+    "build",
+    "diff",
+    "CI",
+    "continuous",
+    "integration",
+    "automated"
+  ],
+  "files": [
+    "bin/post-github-comment-from-travis.js",
+    "dist"
+  ],
+  "author": "Eli Skeggs <eli@mixmax.com> (https://mixmax.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mixmaxhq/post-github-comment-from-travis/issues"
+  },
+  "homepage": "https://github.com/mixmaxhq/post-github-comment-from-travis#readme",
+  "dependencies": {
+    "@octokit/rest": "^16.28.0",
+    "promise-callbacks": "^3.3.0",
+    "yargs": "^13.2.4"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.5",
+    "@babel/plugin-external-helpers": "^7.2.0",
+    "@babel/plugin-proposal-async-generator-functions": "^7.2.0",
+    "@babel/plugin-transform-modules-commonjs": "^7.4.4",
+    "@babel/plugin-transform-runtime": "^7.4.4",
+    "@babel/runtime": "^7.4.5",
+    "eslint": "^5.16.0",
+    "eslint-config-mixmax": "^2.1.0",
+    "eslint-config-prettier": "^4.3.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "prettier": "^1.18.2"
+  }
+}
