@@ -140,7 +140,7 @@ export default class Commenter {
         commentToken,
       }));
 
-    const taggedContent = `${getDedupeComment(commentToken)}\n${content}`;
+    const taggedContent = commentToken ? `${getDedupeComment(commentToken)}\n${content}` : content;
     if (existingComment) {
       if (existingComment.body === taggedContent) {
         return {
