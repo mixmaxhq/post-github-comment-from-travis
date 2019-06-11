@@ -1,6 +1,4 @@
 import yargs from 'yargs';
-import { Transform } from 'stream';
-import { asCallback } from 'promise-callbacks';
 import postComment from '..';
 
 const { argv } = yargs
@@ -20,25 +18,10 @@ if (purpose === undefined) {
   process.exit(1);
 }
 
-const buffer = [];
-
-process.stdin
-  .pipe(
-    new Transform({
-      defaultEncoding: 'utf8',
-      transform(chunk, _, cb) {
-        buffer.push(chunk);
-        cb();
-      },
-      flush(cb) {
-        asCallback(
-          postComment(buffer.join(''), { purpose: purpose || null }).then((result) => {
-            this.push(result);
-            this.push('\n');
-          }),
-          cb
-        );
-      },
-    })
-  )
-  .pipe(process.stdout);
+postComment(process.stdin, { purpose: purpose || null }).then(
+  (result) => console.log(result),
+  (err) => {
+    console.error('error posting comment:', err);
+    process.exit(1);
+  }
+);

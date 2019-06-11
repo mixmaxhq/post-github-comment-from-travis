@@ -1,6 +1,7 @@
 import Octokit from '@octokit/rest';
 import crypto from 'crypto';
 import { URL } from 'url';
+import * as utils from './utils';
 
 // Identify/parse and construct the deduplication comment that goes at the top of the PR comment.
 const rDedupeComment = /^<!-- post-github-comment-from-travis :: ((?:(?!-->).)+?) -->/m;
@@ -124,13 +125,15 @@ export default class Commenter {
    * @param {string} repository The repository on which to create the comment, in slug form.
    * @param {number|string} pullRequest The pull request number on GitHub which holds the thread
    *   where the comment should be created.
-   * @param {string} content The GitHub flavored markdown to put in the comment.
+   * @param {string|Buffer|Readable} content The GitHub flavored markdown to put in the comment.
    * @param {string} purpose The purpose of the comment.
    * @return {Promise<Object>} Some simple metadata about the action performed, suitable for
    *   displaying a simple message detailing the action taken.
    */
   async postComment({ repository, pullRequest, content, purpose = null }) {
     const commentToken = purpose && getUniqueToken({ repository, pullRequest, purpose });
+
+    const stringContent = utils.toString(content);
 
     const existingComment =
       commentToken &&
@@ -140,7 +143,9 @@ export default class Commenter {
         commentToken,
       }));
 
-    const taggedContent = commentToken ? `${getDedupeComment(commentToken)}\n${content}` : content;
+    const taggedContent = await stringContent.then((content) =>
+      commentToken ? `${getDedupeComment(commentToken)}\n${content}` : content
+    );
     if (existingComment) {
       if (existingComment.body === taggedContent) {
         return {

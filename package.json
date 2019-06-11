@@ -35,7 +35,6 @@
   "homepage": "https://github.com/mixmaxhq/post-github-comment-from-travis#readme",
   "dependencies": {
     "@octokit/rest": "^16.28.0",
-    "promise-callbacks": "^3.3.0",
     "yargs": "^13.2.4"
   },
   "devDependencies": {

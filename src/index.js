@@ -11,7 +11,7 @@ const pastTense = new Map(
  * Using Travis environment variables to determine context, post a comment to the appropriate github
  * pull request.
  *
- * @param {string} content GitHub flavored markdown to be displayed in the comment.
+ * @param {string|Buffer|Readable} content GitHub flavored markdown to be displayed in the comment.
  * @param {*} auth Any authorization string or object accepted by octokit.
  * @param {string} purpose The purpose of the comment - multiple calls with the same purpose will
  *   edit the existing comment on the same thread, if possible. Note that multiple comments may be
