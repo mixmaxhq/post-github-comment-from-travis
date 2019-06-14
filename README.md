@@ -17,7 +17,7 @@ $ npm i -D '@mixmaxhq/post-github-comment-from-travis'
 ## Usage
 
 ```js
-import postComment from '@mixmaxhq/post-github-comment-from-travis';
+import { postComment } from '@mixmaxhq/post-github-comment-from-travis';
 import pkg from './package.json';
 
 const numDependencies = Object.keys(pkg.dependencies).length;
@@ -30,3 +30,16 @@ postComment(`there are now ${numDependencies} dependencies`, { purpose: 'depende
 $ post-github-comment-from-travis --purpose package-tree-size
   <<< "there are now $(wc -l package-lock.json) lines in the lockfile"
 ```
+
+## API
+
+### `postComment(content, { ?auth, ?purpose, ?replace })`
+
+Post a comment to the contextually relevant GitHub pull request.
+
+- `content`: the GitHub-flavored markdown content to put in the comment
+- `auth`: the optional authentication parameter to pass to `@octokit/rest` - will use the `GITHUB_TOKEN` environment variable if not provided
+- `purpose`: a string signifying the comment's purpose - repeated calls with the same purpose on the same pull request will overwrite the prior comment
+- `replace`: if `true` (and a `purpose` is provided), create a new comment and delete the old one instead of editing it. if `replace` is `force`, recreates the comment even if the content hasn't changed.
+
+By default, will not edit/replace the comment if the `content` is the same as the existing comment.

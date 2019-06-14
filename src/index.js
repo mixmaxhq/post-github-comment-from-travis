@@ -1,9 +1,11 @@
 import Commenter from './commenter';
+import { getClient, getOptions } from '@mixmaxhq/travis-utils';
 
 const pastTense = new Map(
   Object.entries({
     create: 'created',
     update: 'updated',
+    replace: 'replaced',
   })
 );
 
@@ -16,26 +18,21 @@ const pastTense = new Map(
  * @param {string} purpose The purpose of the comment - multiple calls with the same purpose will
  *   edit the existing comment on the same thread, if possible. Note that multiple comments may be
  *   created, as we don't have thread-level content locking on GitHub.
+ * @param {boolean|string} replace Whether to replace the comment with a new one (true) or edit it
+ *   (false, default). If replace is 'force' then this will re-create the comment even if the
+ *   content matches. The purpose flag must be true.
+ * @throw {Error} If replace is specified but no purpose is provided.
  */
-export default async function(content, { auth = null, purpose = null } = {}) {
-  const pullRequest = process.env.TRAVIS_PULL_REQUEST,
-    slug = process.env.TRAVIS_REPO_SLUG;
+export async function postComment(content, { auth, purpose = null, replace = false } = {}) {
+  const client = new Commenter({ client: getClient({ auth }) });
 
-  if (pullRequest === 'false' || !pullRequest || !slug) {
-    throw new Error('not running in a travis pull request');
-  }
-
-  if (auth === null && process.env.GITHUB_TOKEN) {
-    auth = `token ${process.env.GITHUB_TOKEN}`;
-  }
-
-  const client = new Commenter({ auth });
-  const { action, link, user } = await client.postComment({
-    repository: slug,
-    pullRequest,
-    content,
-    purpose,
-  });
+  const { action, link, user } = await client.postComment(
+    getOptions({
+      content,
+      purpose,
+      replace,
+    })
+  );
 
   const base = `@${user}'s comment: ${link}`;
   return `${
