@@ -1,4 +1,3 @@
-import Octokit from '@octokit/rest';
 import crypto from 'crypto';
 import { URL } from 'url';
 import * as utils from './utils';

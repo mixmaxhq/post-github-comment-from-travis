@@ -35,7 +35,6 @@
   "homepage": "https://github.com/mixmaxhq/post-github-comment-from-travis#readme",
   "dependencies": {
     "@mixmaxhq/travis-utils": "^0.1.0",
-    "@octokit/rest": "^16.28.0",
     "yargs": "^13.2.4"
   },
   "devDependencies": {
