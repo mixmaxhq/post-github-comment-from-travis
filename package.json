@@ -24,7 +24,7 @@
     "automated"
   ],
   "files": [
-    "bin/post-github-comment-from-travis.js",
+    "bin/*.js",
     "dist"
   ],
   "author": "Eli Skeggs <eli@mixmax.com> (https://mixmax.com)",
