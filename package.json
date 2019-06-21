@@ -1,6 +1,6 @@
 {
   "name": "@mixmaxhq/post-github-comment-from-travis",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Post an automated message to the relevant GitHub pull request.",
   "bin": "./bin/post-github-comment-from-travis.js",
   "main": "./dist/index.js",
